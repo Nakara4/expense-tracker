@@ -4,21 +4,26 @@ import './index.css';
 function App() {
   const [expenses, setExpenses] = useState([]);
   const [formData, setFormData] = useState({
-    description: '',
-    category: '',
     name: '',
+    category: '',
+    description: '',
     amount: '',
     date: '',
     time: ''
   });
 
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({ ...prev, [name]: value }));
+  }; 
+
   const handleSubmit = (e) => {
     e.preventDefault();
     setExpenses([...expenses, { ...formData, id: Date.now(), amount: +formData.amount }]);
     setFormData({
-      description: '',
-      category: '',
       name: '',
+      category: '',
+      description: '',
       amount: '',
       date: '',
       time: ''
@@ -29,10 +34,6 @@ function App() {
     setExpenses(expenses.filter(expense => expense.id !== id));
   };
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
-  }; 
   
   return (
     <div className="container">
