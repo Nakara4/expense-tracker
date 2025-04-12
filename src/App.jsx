@@ -25,6 +25,10 @@ function App() {
     });
   };
 
+  const deleteExpense = (id) => {
+    setExpenses(expenses.filter(expense => expense.id !== id));
+  };
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));
@@ -37,9 +41,9 @@ function App() {
       <form onSubmit={handleSubmit}>
         <div className="form-row">
           <input
-            name="description"
-            placeholder="Description"
-            value={formData.description}
+            name="name"
+            placeholder="name"
+            value={formData.name}
             onChange={handleChange}
             required
           />
@@ -53,9 +57,9 @@ function App() {
         </div>
         <div className="form-row">
           <input
-            name="name"
-            placeholder="Name"
-            value={formData.name}
+            name="description"
+            placeholder="description"
+            value={formData.description}
             onChange={handleChange}
             required
           />
@@ -86,6 +90,40 @@ function App() {
         </div>
         <button type="submit">Add Expense</button>
       </form>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Description</th>
+            <th>Category</th>
+            <th>Name</th>
+            <th>Amount</th>
+            <th>Date</th>
+            <th>Time</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {expenses.map(expense => (
+            <tr key={expense.id}>
+              <td>{expense.description}</td>
+              <td>{expense.category}</td>
+              <td>{expense.name}</td>
+              <td>${expense.amount}</td>
+              <td>{expense.date}</td>
+              <td>{expense.time}</td>
+              <td>
+                <button 
+                  onClick={() => deleteExpense(expense.id)}
+                  className="delete-btn"
+                >
+                  Delete
+                </button>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
 
     </div>
 
