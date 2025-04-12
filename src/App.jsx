@@ -2,7 +2,26 @@ import { useState } from 'react';
 import './index.css';
 
 function App() {
-  const [expenses, setExpenses] = useState([]);
+  const [expenses, setExpenses] = useState([
+    {
+      id: 1,
+      name: "eggs",
+      category: "shopping",
+      description: "buy protein",
+      amount: 2000,
+      date: "2025-6-10",
+      time: "14:30"
+    },
+    {
+      id: 2,
+      name: "car wash",
+      category: "cleaning",
+      description: "clean car exterior and interior",
+      amount: 300,
+      date: "2025-6-12",
+      time: "09:15"
+    }
+  ]);
   const [formData, setFormData] = useState({
     name: '',
     category: '',
