@@ -31,6 +31,13 @@ function App() {
     time: ''
   });
 
+  const [searchTerm, setSearchTerm] = useState('');
+
+  const filteredExpenses = expenses.filter(expense => 
+    expense.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    expense.name.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));
@@ -57,6 +64,16 @@ function App() {
   return (
     <div className="container">
       <h1>Expense Tracker</h1>
+
+      <div className="search-container">
+  <input
+    type="text"
+    placeholder="Search by description or name..."
+    value={searchTerm}
+    onChange={(e) => setSearchTerm(e.target.value)}
+    className="search-input"
+  />
+</div> 
      
       <form onSubmit={handleSubmit}>
         <div className="form-row">
@@ -124,7 +141,7 @@ function App() {
           </tr>
         </thead>
         <tbody>
-          {expenses.map(expense => (
+        {filteredExpenses.map(expense => (
             <tr key={expense.id}>
               <td>{expense.name}</td>
               <td>{expense.category}</td>
