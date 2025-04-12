@@ -95,9 +95,9 @@ function App() {
       <table>
         <thead>
           <tr>
-            <th>Description</th>
+            <th>name</th>
             <th>Category</th>
-            <th>Name</th>
+            <th>description</th>
             <th>Amount</th>
             <th>Date</th>
             <th>Time</th>
@@ -107,9 +107,9 @@ function App() {
         <tbody>
           {expenses.map(expense => (
             <tr key={expense.id}>
-              <td>{expense.description}</td>
-              <td>{expense.category}</td>
               <td>{expense.name}</td>
+              <td>{expense.category}</td>
+              <td>{expense.description}</td>
               <td>${expense.amount}</td>
               <td>{expense.date}</td>
               <td>{expense.time}</td>
