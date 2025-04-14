@@ -1,5 +1,8 @@
 import { useState } from 'react';
 import './index.css';
+import { ExpenseForm } from './ExpenseForm';
+import { ExpenseTable } from './ExpenseTable';
+import { SearchBar } from './SearchBar';
 
 function App() {
   const [expenses, setExpenses] = useState([
@@ -22,15 +25,7 @@ function App() {
       time: "09:15"
     }
   ]);
-  const [formData, setFormData] = useState({
-    name: '',
-    category: '',
-    description: '',
-    amount: '',
-    date: '',
-    time: ''
-  });
-
+  
   const [searchTerm, setSearchTerm] = useState('');
 
   const filteredExpenses = expenses.filter(expense => 
@@ -38,132 +33,30 @@ function App() {
     expense.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
-  }; 
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    setExpenses([...expenses, { ...formData, id: Date.now(), amount: +formData.amount }]);
-    setFormData({
-      name: '',
-      category: '',
-      description: '',
-      amount: '',
-      date: '',
-      time: ''
-    });
+  const handleAddExpense = (newExpense) => {
+    setExpenses([...expenses, newExpense]);
   };
 
   const deleteExpense = (id) => {
     setExpenses(expenses.filter(expense => expense.id !== id));
   };
 
-  
   return (
     <div className="container">
       <h1>Expense Tracker</h1>
-
-      <div className="search-container">
-  <input
-    type="text"
-    placeholder="Search by description or name..."
-    value={searchTerm}
-    onChange={(e) => setSearchTerm(e.target.value)}
-    className="search-input"
-  />
-</div> 
-     
-      <form onSubmit={handleSubmit}>
-        <div className="form-row">
-          <input
-            name="name"
-            placeholder="name"
-            value={formData.name}
-            onChange={handleChange}
-            required
-          />
-          <input
-            name="category"
-            placeholder="Category"
-            value={formData.category}
-            onChange={handleChange}
-            required
-          />
-        </div>
-        <div className="form-row">
-          <input
-            name="description"
-            placeholder="description"
-            value={formData.description}
-            onChange={handleChange}
-            required
-          />
-          <input
-            name="amount"
-            type="number"
-            placeholder="Amount"
-            value={formData.amount}
-            onChange={handleChange}
-            required
-          />
-        </div>
-        <div className="form-row">
-          <input
-            name="date"
-            type="date"
-            value={formData.date}
-            onChange={handleChange}
-            required
-          />
-          <input
-            name="time"
-            type="time"
-            value={formData.time}
-            onChange={handleChange}
-            required
-          />
-        </div>
-        <button type="submit">Add Expense</button>
-      </form>
-
-      <table>
-        <thead>
-          <tr>
-            <th>name</th>
-            <th>Category</th>
-            <th>description</th>
-            <th>Amount</th>
-            <th>Date</th>
-            <th>Time</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-        {filteredExpenses.map(expense => (
-            <tr key={expense.id}>
-              <td>{expense.name}</td>
-              <td>{expense.category}</td>
-              <td>{expense.description}</td>
-              <td>${expense.amount}</td>
-              <td>{expense.date}</td>
-              <td>{expense.time}</td>
-              <td>
-                <button 
-                  onClick={() => deleteExpense(expense.id)}
-                  className="delete-btn"
-                >
-                  Delete
-                </button>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-
+      
+      <SearchBar 
+        searchTerm={searchTerm} 
+        onSearch={setSearchTerm} 
+      />
+      
+      <ExpenseForm onSubmit={handleAddExpense} />
+      
+      <ExpenseTable 
+        expenses={filteredExpenses} 
+        onDelete={deleteExpense} 
+      />
     </div>
-
   );
 }
 
